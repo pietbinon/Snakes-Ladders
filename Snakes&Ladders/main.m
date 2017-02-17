@@ -29,8 +29,15 @@ int main(int argc, const char * argv[]) {
             NSString *inputString = [NSString stringWithUTF8String: inputChar];
             NSString *input = [inputString stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
             
-            if ([input isEqualToString: @"r"] || [input isEqualToString: @"roll"])
+            if ([input isEqualToString: @"r"] || [input isEqualToString: @"roll"]) {
                 [player1 roll];
+                
+                if (player1.gameOver == YES) {
+                    player1.output = [NSString stringWithFormat: @"You WON!!!"];
+                    NSLog (@"%@", player1.output);
+                    break;
+                }
+            }
             else {
                 NSLog (@"You haven't entered the required text... Goodbye!");
                 break;

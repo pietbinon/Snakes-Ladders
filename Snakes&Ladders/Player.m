@@ -30,7 +30,8 @@
                        @(89) : @(26),
                        @(95) : @(75),
                        @(99) : @(78)};
-                       
+        
+        _gameOver = NO;
     }
     return self;
 }
@@ -46,21 +47,32 @@
     NSNumber *myCurrentSquare = @(self.currentSquare);
     
     //If the content of the () == 1 (YES), meaning if there is a match between currentSquare and a key in the NSDictionary
-    if ([self.gameLogic objectForKey: myCurrentSquare]) {
+    //-[NSDictionary objectForKey:] "Returns the value associated with a given key." [source]
+    NSNumber *toMoveTo = self.gameLogic[myCurrentSquare];
+//    if ([self.gameLogic objectForKey: myCurrentSquare] != nil) {
+    if (toMoveTo != nil) {
         
         //Assign the current value of currentSquare to a temp variable called baseValue
-        int baseValue = self.currentSquare;
+        NSInteger baseValue = self.currentSquare;
         
         //Assign now to currentSquare the value retrieved from the NSDictionary (and based on the key - previous step0 after
         //converting this value from an NSMumber to an integer (same operation as line 49)
-        self.currentSquare = [[self.gameLogic objectForKey: myCurrentSquare] intValue];
+//        self.currentSquare = [[self.gameLogic objectForKey: myCurrentSquare] intValue];
+        self.currentSquare = [toMoveTo intValue];
         
-        if (self.currentSquare > baseValue)
-            NSLog (@"GREAT! You have been promoted from square %d to square %ld", baseValue, (long)self.currentSquare);
-        else
-            NSLog (@"BUMMER!!! You have been demoted from square %d to square %ld", baseValue, (long)self.currentSquare);
+        if (self.currentSquare > baseValue) {
+            self.output = [NSString stringWithFormat: @"GREAT! You have been promoted from square %ld to square %ld", (long)baseValue, (long)self.currentSquare];
+            NSLog (@"%@", self.output);
+        }
+        else {
+            self.output = [NSString stringWithFormat: @"BUMMER!!! You have been demoted from square %ld to square %ld", (long)baseValue, (long)self.currentSquare];
+            NSLog (@"%@", self.output);
+        }
     }
     NSLog (@"You are currently on square %ld", (long)self.currentSquare);
+    
+    if (self.currentSquare >+ 100)
+        self.gameOver = YES;
     
     
 }
